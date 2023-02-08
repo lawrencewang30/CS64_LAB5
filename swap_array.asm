@@ -208,21 +208,27 @@ doSwap:
         la $t1, expectedMyArray
         li $t2, 0
         li $t3, 5
+        li $t4, 11
 
 start:
-        beq $t2, $t3, array_exit
+        beq $t2, $t3, t2_is_5
         lw $a0, 0($t0)
         lw $a1, 0($t1)
-        sw $s0, 0($t1)
-        sw $s1, 0($t0)
+        sw $a0, 0($t1)
+        sw $a1, 0($t0)
         add $t0, $t0, 4
-        sub $t3, $t3, 4
-        add $t1, $t1, 1
+        add $t1, $t1, 4
+        add $t2, $t2, 1
+        beq $t2, $t4, loop_exit
         j start
 
-array_exit:
-        li $v0, 10
-        syscall
+t2_is_5:
+        add $t0, $t0, 4
+        add $t1, $t1, 4
+        add $t2, $t2, 1
+        bne $t2, $t3, start
+
+loop_exit:
 
 
         # do not remove this last line
