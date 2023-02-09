@@ -204,32 +204,27 @@ doSwap:
         # }
 
         # TODO: fill in the code
-        la $t0, myArray
-        la $t1, expectedMyArray
-        li $t2, 0
-        li $t3, 5
-        li $t4, 11
+        li $t0, 0
+        li $t1, 10
 
 start:
-        beq $t2, $t3, t2_is_5
-        lw $a0, 0($t0)
-        lw $a1, 0($t1)
-        sw $a0, 0($t1)
-        sw $a1, 0($t0)
-        add $t0, $t0, 4
-        add $t1, $t1, 4
-        add $t2, $t2, 1
-        beq $t2, $t4, loop_exit
+        beq $t0, 5, start_exit
+        la $t2, myArray 
+        sll $t3, $t0, 2 # loads 1st half of myArray
+        add $t3, $t3, $t2
+        lw $t4, 0($t3)
+
+        sll $t5, $t1, 2 # loads 2nd half of myArray
+        add $t2, $t2, $t5
+        lw $t6, 0($t2)
+
+        sw $t4, 0($t2)
+        sw $t6, 0($t3)
+
+        addiu $t0, $t0, 1
+        addiu $t1, $t1, -1
         j start
 
-t2_is_5:
-        add $t0, $t0, 4
-        add $t1, $t1, 4
-        add $t2, $t2, 1
-        bne $t2, $t3, start
-
-loop_exit:
-
-
+start_exit:
         # do not remove this last line
         jr $ra
